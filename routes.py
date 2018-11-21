@@ -6,11 +6,12 @@ import xlrd
 
 
 
-
+# to route the user the upload the .xlsx file
 @app.route('/')
 def upload_file():
    return render_template('upload.html')
 
+# function that converts the .xlsx file into .csv file and saves it into input folder as test.csv which is used for further analytics 
 @app.route('/Fileupload', methods = ['POST'])
 def upload():
    if request.method == 'POST':
@@ -28,7 +29,7 @@ def upload():
 
 
    return 'file uploaded successfully'
-
+# function that reads the test.csv and creates dataframe from which a filtered dataframe is generated which contains all the metabolics with suffix as PC and later write it a file
 @app.route('/metabolic_suffix_PC')
 def metabolic_suffix_PC():
     column_names = pd.read_csv('input/test.csv',  engine='python')
@@ -48,6 +49,8 @@ def metabolic_suffix_PC():
                      mimetype='text/csv',
                      attachment_filename='output_PC.csv',
                      as_attachment=True)
+
+# function that reads the test.csv and creates dataframe from which a filtered dataframe is generated which contains all the metabolics with suffix as LPC and later write it a file
 @app.route('/metabolic_suffix_LPC')
 def metabolic_suffix_LPC():
     column_names = pd.read_csv('input/test.csv',  engine='python')
@@ -67,6 +70,8 @@ def metabolic_suffix_LPC():
                      mimetype='text/csv',
                      attachment_filename='output_LPC.csv',
                      as_attachment=True)
+
+# function that reads the test.csv and creates dataframe from which a filtered dataframe is generated which contains all the metabolics with suffix as plasmalogen and later write it a file
 @app.route('/metabolic_suffix_plasmalogen')
 def metabolic_suffix_plasmalogen():
     column_names = pd.read_csv('input/test.csv',  engine='python')
@@ -86,6 +91,7 @@ def metabolic_suffix_plasmalogen():
                      mimetype='text/csv',
                      attachment_filename='output_plasmalogen.csv',
                      as_attachment=True)
+# function that appends the Retention Time Roundoff column in the main dataframe and later write it a file
 @app.route('/parentfile_with_RTR')
 def parentfile_with_RTR():
     column_names = pd.read_csv('input/test.csv',  engine='python')
@@ -106,6 +112,7 @@ def parentfile_with_RTR():
                      mimetype='text/csv',
                      attachment_filename='outputfile_with_RTR.csv',
                      as_attachment=True)
+# function that creates a dataframe that has mean of all metabolics readings grouped by Retention Time Roundoff(in mins) and these dataframe doesnot include unnecessary columns and finally it is written to the file
 @app.route('/metabolicmean_with_similarRTR')
 def metabolicmean_with_similarRTR():
     column_names = pd.read_csv('input/test.csv',  engine='python')
